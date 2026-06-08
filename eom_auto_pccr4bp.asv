@@ -1,9 +1,8 @@
-function dx_dt_vec =  eom_auto_pccr4bp(tau, x_vec, params)
+function dx_dt_vec =  eom_auto_pccr4bp(t, x_vec, params)
 %==========================================================================
 %
-% Computes planar autonomous PCCR4BP Hamiltonian equations of motion 
-% in synodic frame.
-% State vector is defined as x = [x y t p_x p_y p_t]^T.
+% Computes planar CCR4BP Hamiltonian equations of motion in synodic frame.
+% State vector is defined as x = [x y p_x p_y]^T.
 %
 % Author: G. Montseny
 % Date: June 8, 2026
@@ -12,18 +11,17 @@ function dx_dt_vec =  eom_auto_pccr4bp(tau, x_vec, params)
 % INPUT:               Description                                   Units
 %
 %  t         -   time                                               -
-%  x_vec     -   state vector (6x1)                                 -
+%  x_vec     -   state vector (4x1)                                 -
 %  params    -   parameter struct                                   -
 %
 % OUTPUT:
 %
-%  dx_dt_vec -   time derivative of state (6x1)                     -
+%  dx_dt_vec -   time derivative of state (4x1)                     -
 %==========================================================================
 
     % Initialization
     x_vec = x_vec(:);
     dx_dt_vec = zeros(size(x_vec));
-    t = x_vec(3);
 
     % Inputs
     switch params.frame
@@ -74,9 +72,6 @@ function dx_dt_vec =  eom_auto_pccr4bp(tau, x_vec, params)
     dx_dt_vec(5) = -p_x - (1-mu)*(y-y_1)/r_14^3 - mu*(y - y_2)/r_24^3 ...
     -mu_3*(y - y_3)/r_34^3 - mu_3*sin(theta_3_t)/r_13^2;
 
-    dx_dt_vec(6) = (Omega_3 - 1) * (( mu_3 / r_34^3) * ...
-        (r_13 * cos(theta_3_t) * (y - r_13 * sin(theta_3_t) ) - ...
-        r_13 * sin(theta_3_t) * (x + mu - r_13 * cos(theta_3_t))) + ...
-        (mu_3 / r_13^2) * (x * sin(theta_3_t) - y * cos(theta_3_t)));
+    dx_dt_vec(6) = (Omega_3 - 1) * ( mu_3 / r_34^3)
     
 end
