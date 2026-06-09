@@ -1,4 +1,4 @@
-function dx_dt_vec =  eom_auto_pccr4bp(tau, x_vec, params)
+function dx_dt_vec =  eom_apccr4bp(tau, x_vec, params)
 %==========================================================================
 %
 % Computes planar autonomous PCCR4BP Hamiltonian equations of motion 

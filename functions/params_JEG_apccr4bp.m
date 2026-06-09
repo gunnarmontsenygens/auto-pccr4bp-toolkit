@@ -1,14 +1,14 @@
-function params = params_SJE()
+function params = params_JEG_apccr4bp()
 %==========================================================================
 %
-% Defines parameters for the Saturn–Janus–Epimetheus CCR4BP model.
+% Defines parameters for the Jupiter–Europa–Ganymede CCR4BP model.
 % Synodic frame is defined with respect to the primary pair (m1,m2).
-% 1 - Saturn
+% 1 - Jupiter
 % 2 - Europa
 % 3  - Ganymede
 %
 % Author: G. Montseny
-% Date: April 30, 2026
+% Date: April 09, 2026
 %
 
 %
@@ -27,9 +27,9 @@ function params = params_SJE()
     % Mass parameters (normalized)
     %======================================================================
     
-    params.m1 = 5.683e26; % kg
-    params.m2 = 1.98e18; % kg
-    params.m3 = 5.6e17; % kg 
+    params.m1 = 1.89813e27; % kg
+    params.m2 = 4.79984e22; % kg
+    params.m3 = 1.4819e23; % kg 
 
     params.mu    = params.m2/(params.m1 + params.m2);   % m2 / (m1 + m2)
     params.mu_pert  = params.m3/(params.m1 + params.m2);   % m3 / (m1 + m2)
@@ -38,17 +38,17 @@ function params = params_SJE()
     % Geometry (normalized distances)
     %======================================================================
     
-    params.r_SJ = 151472; % in km
-    params.r_SE = 151422; % in km
-    params.r_pert  = params.r_SE/params.r_SJ;   % distance of perturbing body orbit
+    params.r_JE = 670900; % in km
+    params.r_JG = 1070400; % in km
+    params.r_pert  = params.r_JG/params.r_JE;   % distance of perturbing body orbit
     
     %======================================================================
     % Perturbing body motion
     %======================================================================
-    %params.T2 = 3.551181; % in days
-    %params.T3 = 7.15455296; % in days
-    params.Omega_pert    = 1; % angular rate in synodic frame
-    params.theta_pert_0  = pi;      % initial phase
+    params.T2 = 3.551181; % in days
+    params.T3 = 7.15455296; % in days
+    params.Omega_pert    = params.T2/params.T3;      % angular rate in synodic frame
+    params.theta_pert_0  = 0;      % initial phase
     
     %======================================================================
     % Numerical settings
@@ -57,5 +57,19 @@ function params = params_SJE()
     params.ode.options = odeset( ...
         'RelTol', 1e-13, ...
         'AbsTol', 1e-13);
+
+    %-------------------------------
+    % Model definition
+    %-------------------------------
+    params.model.name = 'aPCCR4BP';
+    params.model.formulation = 'hamiltonian';
+    params.model.frame = 'synodic';
+    params.model.units = 'nd';
+
+    %-------------------------------
+    % Functions
+    %-------------------------------
+    params.fun.eom = @eom_apccr4bp;
+    params.fun.integrate = @integrate_apccr4bp;
     
 end
